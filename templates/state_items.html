@@ -33,16 +33,16 @@
                             <i class="bi bi-trash" style="pointer-events: none;"></i>
                           </button>
 
-                          <div class="dropdown">
-                              <button class="btn btn-sm dropdown-toggle border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Move Item">
-                                <i class="bi bi-arrow-right-circle" style="pointer-events: none;"></i>
-                              </button>
-                              <ul class="dropdown-menu">
-                                {% for transition in transitions %}
-                                <li><a class="dropdown-item" href="#" data-target-state="{{transition.name}}">{{transition.move_description}}</a></li>
-                                {% endfor %}
-                              </ul>
-                          </div>
+                          <!-- <div class="dropdown"> -->
+                          <!--     <button class="btn btn-sm dropdown-toggle border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Move Item"> -->
+                          <!--       <i class="bi bi-arrow-right-circle" style="pointer-events: none;"></i> -->
+                          <!--     </button> -->
+                          <!--     <ul class="dropdown-menu"> -->
+                          <!--       {% for transition in transitions %} -->
+                          <!--       <li><a class="dropdown-item" href="#" data-target-state="{{transition.name}}">{{transition.move_description}}</a></li> -->
+                          <!--       {% endfor %} -->
+                          <!--     </ul> -->
+                          <!-- </div> -->
                         </div>
                     </li>
                     {% endfor %}

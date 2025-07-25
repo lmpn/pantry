@@ -30,50 +30,50 @@
     </nav>
 
     <div class="container mt-4">
-        <div
-          id="stock-row"
-          hx-get="/item?state=stock"
-          hx-ext="response-targets"
-          hx-target-4xx="#stock-items-message" hx-swap-4xx="innerHTML"
-          hx-target-5xx="#stock-items-message" hx-swap-5xx="innerHTML"
-          hx-trigger="load"
-          hx-swap="outerHTML">
-            <div class="row mb-4">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header bg-success text-white">
-                            <h5 class="mb-0">In Stock</h5>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <div id="stock-items-message" class="text-center p-3 text-muted">Loading Stock items...</div>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div
+        id="stock-row"
+        hx-get="/item?state=stock"
+        hx-ext="response-targets"
+        hx-target-4xx="#stock-items-message" hx-swap-4xx="innerHTML"
+        hx-target-5xx="#stock-items-message" hx-swap-5xx="innerHTML"
+        hx-trigger="load"
+        hx-swap="outerHTML">
+          <div class="row mb-4">
+              <div class="col-12">
+                  <div class="card">
+                      <div class="card-header bg-success text-white">
+                          <h5 class="mb-0">In Stock</h5>
+                      </div>
+                      <ul class="list-group list-group-flush">
+                          <div id="stock-items-message" class="text-center p-3 text-muted">Loading Stock items...</div>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
 
-        <!-- <div -->
-        <!--   id="shopping-row" -->
-        <!--   hx-get="/item?state=shopping" -->
-        <!--   hx-ext="response-targets" -->
-        <!--   hx-target-4xx="#shopping-items-message" hx-swap-4xx="innerHTML" -->
-        <!--   hx-target-5xx="#shopping-items-message" hx-swap-5xx="innerHTML" -->
-        <!--   hx-trigger="load" -->
-        <!--   hx-swap="outerHTML"> -->
-        <!--     <div class="row mb-4"> -->
-        <!--         <div class="col-12"> -->
-        <!--             <div class="card"> -->
-        <!--                 <div class="card-header bg-warning text-dark"> -->
-        <!--                     <h5 class="mb-0">Shopping</h5> -->
-        <!--                 </div> -->
-        <!--                 <ul class="list-group list-group-flush"> -->
-        <!--                     <div id="shopping-items-message" class="text-center p-3 text-muted">Loading Shopping items...</div> -->
-        <!--                 </ul> -->
-        <!--             </div> -->
-        <!--         </div> -->
-        <!--     </div> -->
-        <!-- </div> -->
-        <!---->
+      <div
+        id="shopping-row"
+        hx-get="/item?state=shopping"
+        hx-ext="response-targets"
+        hx-target-4xx="#shopping-items-message" hx-swap-4xx="innerHTML"
+        hx-target-5xx="#shopping-items-message" hx-swap-5xx="innerHTML"
+        hx-trigger="load"
+        hx-swap="outerHTML">
+          <div class="row mb-4">
+              <div class="col-12">
+                  <div class="card">
+                      <div class="card-header bg-warning text-dark">
+                          <h5 class="mb-0">Shopping</h5>
+                      </div>
+                      <ul class="list-group list-group-flush">
+                          <div id="shopping-items-message" class="text-center p-3 text-muted">Loading Shopping items...</div>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+
     <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -107,7 +107,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="itemQuantity" class="form-label">Quantity</label>
-                            <input type="number" class="form-control" id="itemQuantity" name="quantity" min="0" required>
+                            <input type="number" step="any" class="form-control" id="itemQuantity" name="quantity" min="0" required>
                         </div>
                         <div class="mb-3">
                             <label for="itemState" class="form-label">State</label>
