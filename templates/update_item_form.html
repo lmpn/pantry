@@ -1,0 +1,56 @@
+<form hx-put="/item"
+      hx-swap="none"
+      hx-on--after-request="
+        if (event.detail.xhr.status >= 200 && event.detail.xhr.status < 300) {
+            // Close the modal
+            var modalElement = document.getElementById('editItemModal');
+            var modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+            modal.hide();
+
+            // Trigger refresh for the original state's row (if state didn't change)
+            // and the new state's row (if state changed).
+            // It's safest to trigger both old and new or even all rows.
+            // Assuming backend sends old and new state in response details or HX-Trigger
+            const oldState = event.detail.requestConfig.parameters.state; // If you pass original state
+            const newState = event.detail.requestConfig.parameters.original_state; // New state from form
+
+            if (oldState && oldState !== newState) {
+                htmx.trigger(document.getElementById(oldState + '-row'), 'refresh-row');
+            }
+            htmx.trigger(document.getElementById(newState + '-row'), 'refresh-row'); // Always refresh new state
+        } else {
+            console.error('Error updating item:', event.detail.xhr.status, event.detail.xhr.responseText);
+            alert('Failed to update  Please try again.');
+        }
+      ">
+  <input type="hidden" id="editItemId" name="id" value="{{id}}">
+  <input type="hidden" name="original_state" value="{{original_state}}">
+
+    <div class="mb-3">
+        <label for="editItemName" class="form-label">Item Name</label>
+    <input type="text" class="form-control" id="editItemName" name="name" value="{{name}}" required>
+    </div>
+    <div class="mb-3">
+        <label for="editItemQuantity" class="form-label">Quantity</label>
+    <input type="number" class="form-control" id="editItemQuantity" name="quantity" min="0" value="{{quantity}}" required>
+    </div>
+    <div class="mb-3">
+        <label for="editItemState" class="form-label">State</label>
+        <select class="form-select" id="editItemState" name="state" required>
+          {% if original_state == crate::item::State::Stock %}
+            <option value="stock" selected>Stock</option>
+          {% else %}
+            <option value="stock">Stock</option>
+          {% endif %}
+          {% if original_state == crate::item::State::Shopping %}
+            <option value="shopping" selected>Shopping</option>
+          {% else %}
+            <option value="shopping">Shopping</option>
+          {% endif %}
+        </select>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </div>
+</form>

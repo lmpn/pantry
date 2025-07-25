@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Inventory</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <button class="btn btn-primary"
+                                type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#addItemModal">
+                            Add New Item
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div
+          id="stock-row"
+          hx-get="/item?state=stock"
+          hx-ext="response-targets"
+          hx-target-4xx="#stock-items-message" hx-swap-4xx="innerHTML"
+          hx-target-5xx="#stock-items-message" hx-swap-5xx="innerHTML"
+          hx-trigger="load"
+          hx-swap="outerHTML">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">In Stock</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <div id="stock-items-message" class="text-center p-3 text-muted">Loading Stock items...</div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div -->
+        <!--   id="shopping-row" -->
+        <!--   hx-get="/item?state=shopping" -->
+        <!--   hx-ext="response-targets" -->
+        <!--   hx-target-4xx="#shopping-items-message" hx-swap-4xx="innerHTML" -->
+        <!--   hx-target-5xx="#shopping-items-message" hx-swap-5xx="innerHTML" -->
+        <!--   hx-trigger="load" -->
+        <!--   hx-swap="outerHTML"> -->
+        <!--     <div class="row mb-4"> -->
+        <!--         <div class="col-12"> -->
+        <!--             <div class="card"> -->
+        <!--                 <div class="card-header bg-warning text-dark"> -->
+        <!--                     <h5 class="mb-0">Shopping</h5> -->
+        <!--                 </div> -->
+        <!--                 <ul class="list-group list-group-flush"> -->
+        <!--                     <div id="shopping-items-message" class="text-center p-3 text-muted">Loading Shopping items...</div> -->
+        <!--                 </ul> -->
+        <!--             </div> -->
+        <!--         </div> -->
+        <!--     </div> -->
+        <!-- </div> -->
+        <!---->
+    <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addItemModalLabel">Add New Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form hx-post="/item" hx-swap="none"
+                          hx-on--after-request="
+                            if (event.detail.xhr.status >= 200 && event.detail.xhr.status < 300) {
+                                var itemState = document.getElementById('itemState').value;
+                                console.log('Item added to state:', itemState);
+
+                                this.reset(); // Reset the form
+
+                                var modalElement = document.getElementById('addItemModal');
+                                var modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+                                modal.hide(); // Hide the modal
+
+                                // Trigger refresh for the specific row
+                                htmx.trigger(document.getElementById(itemState + '-row'), 'refresh-row');
+                            } else {
+                                console.error('Error adding item:', event.detail.xhr.status, event.detail.xhr.responseText);
+                                alert('Failed to add item. Please try again.');
+                            }
+                          ">
+                        <div class="mb-3">
+                            <label for="itemName" class="form-label">Item Name</label>
+                            <input type="text" class="form-control" id="itemName" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="itemQuantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="itemQuantity" name="quantity" min="0" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="itemState" class="form-label">State</label>
+                            <select class="form-select" id="itemState" name="state" required>
+                                <option value="stock">Stock</option>
+                                <option value="shopping">Shopping</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save Item</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editItemModal" tabindex="-1" aria-labelledby="editItemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editItemModalLabel">Edit Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="editItemModalBody">
+                    <div class="text-center p-3 text-muted">Loading item details...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx-ext-response-targets@2.0.2"></script>
+
+    <script>
+
+        // Listen for clicks on any .edit-item button (delegated to document.body for dynamic elements)
+        document.body.addEventListener('click', function(event) {
+            if (event.target.classList.contains('edit-item')) {
+                const button = event.target;
+                // Find the closest list item and get its ID
+                const listItem = button.closest('li[data-item-id]');
+                const itemId = listItem ? listItem.dataset.itemId : null;
+                const currentItemState = listItem ? listItem.dataset.itemState : null; // Get current state from list item
+
+                if (itemId) {
+                    const editModalBody = document.getElementById('editItemModalBody');
+                    // HTMX request to load the edit form for this item into the modal body
+                    // Backend will need to return HTML for the form pre-filled
+                    htmx.ajax('GET', `/item/edit-form/${itemId}`, { target: editModalBody, swap: 'innerHTML' })
+                        .then(() => {
+                            // After HTMX loads the content, show the modal
+                            var editModalElement = document.getElementById('editItemModal');
+                            var editModal = new bootstrap.Modal(editModalElement);
+                            editModal.show();
+                        })
+                        .catch(error => {
+                            console.error('Error loading edit form:', error);
+                            alert('Could not load item for editing. Please try again.');
+                        });
+                } else {
+                    console.warn('Item ID not found for edit button. Ensure the item <li> has data-item-id.');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
