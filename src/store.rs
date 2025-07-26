@@ -109,7 +109,7 @@ impl SqliteItemStore {
     pub async fn new(dsn: &str) -> Self {
         let pool = SqlitePool::connect(dsn)
             .await
-            .inspect_err(|err| tracing::error!("{err}"))
+            .inspect_err(|err| tracing::error!("{err} - dsn {dsn}"))
             .expect("SqlitePool for ItemStore couldn't be initialized");
         sqlx::migrate!()
             .run(&pool)

@@ -4,7 +4,7 @@ use axum::{
     Router,
     routing::{delete, get, post, put},
 };
-use config::Config;
+use config::{Config, FileFormat};
 use configuration::Configuration;
 use store::SqliteItemStore;
 use tokio::net::TcpListener;
@@ -22,9 +22,13 @@ mod update_item;
 
 #[tokio::main]
 async fn main() {
+    let path = std::env::args()
+        .skip(1)
+        .next()
+        .expect("no toml config provided");
     let configuration: Configuration = Config::builder()
         // Add in `./Settings.toml`
-        .add_source(config::File::with_name("config.toml"))
+        .add_source(config::File::new(&path, FileFormat::Toml))
         // Add in settings from the environment (with a prefix of APP)
         // Eg.. `APP_DEBUG=1 ./target/app` would set the `debug` key
         .add_source(config::Environment::with_prefix("APP"))

@@ -1,0 +1,31 @@
+services:
+  couchdb:
+    image: pantry:latest
+    container_name: pantry 
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    user: 1000:1000
+    ports:
+      - 3001:3001 # same as cloudflared below
+    restart: unless-stopped
+    command: /config.toml
+    secrets:
+      - pantry_config
+    volumes:
+      - ./config-prod.toml:/config.toml
+      - ./pantry.db:/tmp/pantry.db
+  cloudflared:
+    image: cloudflare/cloudflared
+    container_name: cloudflare-tunnel
+    restart: unless-stopped
+    command: tunnel run --token-file /run/secrets/tunnel_token
+    secrets:
+      - tunnel_token
+    networks:
+      - default
+
+secrets:
+   pantry_config:
+     file: config-prod.toml
+   tunnel_token:
+     file: tunnel_token.txt
