@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Center</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .file-navigator {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 1rem;
+        }
+        .file-item {
+            border: 1px solid #ccc;
+            padding: 1rem;
+            text-align: center;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            width: 150px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .file-item:hover {
+            background-color: #e9e9e9;
+        }
+        .file-item i {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            color: #007bff;
+        }
+        .file-item-name {
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Media Center</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="mb-3">
+            <form hx-post="/upload" hx-encoding="multipart/form-data" hx-target="#upload-status" hx-swap="outerHTML">
+                <label for="fileUpload" class="form-label">Upload New Files:</label>
+                <input type="file" name="file" id="fileUpload" class="form-control" multiple>
+                <button type="submit" class="btn btn-primary mt-2">Upload Files</button>
+            </form>
+            <div id="upload-status" class="mt-2"></div>
+        </div>
+
+        <div class="file-navigator">
+            {% for item in media_items %}
+            <div class="file-item">
+                <i class="bi "></i>
+                <div class="file-item-name">{{ item.title }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</body>
+</html>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+</body>
+</html>
+

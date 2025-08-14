@@ -1,0 +1,11 @@
+[package]
+name = "media-center"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+axum = { version = "0.8.4", features = ["multipart"] }
+tokio = { version = "1.47.1", features = ["full", "rt-multi-thread"] }
+askama = "0.14"
+sqlx = { version = "0.8.6", features = ["sqlite", "runtime-tokio"] }
+serde = { version = "1.0.219", features = ["derive"] }
